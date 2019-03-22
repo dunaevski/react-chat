@@ -2,8 +2,8 @@ import React from "react";
 import classnames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
-// import Avatar from '../../Avatar'
+// import Avatar from "@material-ui/core/Avatar";
+import Avatar from '../../Avatar'
 import Paper from "@material-ui/core/Paper";
 
 import titleInitials from "../../../utils/title-initials";
@@ -34,7 +34,7 @@ function ChatMessage(props) {
   const { classes, message, sender } = props;
   const isMessageFromMe = sender === "me";
 
-  const userAvatar = <Avatar>{titleInitials(sender)}</Avatar>;
+  const userAvatar = <Avatar colorFrom={sender}>{sender}</Avatar>;
 
   return (
     <div

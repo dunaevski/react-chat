@@ -1,13 +1,13 @@
 import React from "react";
-import MUIAvata from "@material-ui/core/Avatar";
+import MUIAvatar from "@material-ui/core/Avatar";
 import getColor from "../utils/color-from";
 import titleInitials from "../utils/title-initials";
 
-const Avatar = ({ colorFrom, childern, ...rest }) => {
+const Avatar = ({ colorFrom, children, ...rest }) => {
   return (
-    <MUIAvata style={{ backgroundColor: getColor(colorFrom) }} {...rest}>
-      {titleInitials(childern)}
-    </MUIAvata>
+    <MUIAvatar style={{ backgroundColor: getColor(colorFrom) }} {...rest}>
+       {titleInitials(children)}
+    </MUIAvatar>
   );
 };
 
