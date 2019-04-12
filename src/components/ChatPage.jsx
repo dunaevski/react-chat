@@ -1,10 +1,10 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import ChatHeader from "./AppBar/ChatHeader";
-import SideBar from "./SideBar/NavBar/SideBar";
-import Chat from "./AppBar/MessageContent/Chat";
+import ChatHeader from "./appbar/ChatHeader";
+import SideBar from "./sidebar/NavBar/SideBar";
+import Chat from "./appbar/MessageContent/Chat";
 
-import { chats, messages } from "../data";
+import { messages } from "../data";
 
 const styles = theme => ({
   root: {
@@ -16,15 +16,24 @@ const styles = theme => ({
   }
 });
 
-function ChatPage(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <ChatHeader />
-      <SideBar chats={chats} />
-      <Chat messages={messages} />
-    </div>
-  );
+class ChatPage extends React.Component {
+  componentDidMount() {
+    const { fetchAllChats, fetchMyChats } = this.props;
+
+    Promise.all([fetchMyChats(), fetchAllChats()]);
+  }
+
+  render() {
+    const { classes, chats } = this.props;
+
+    return (
+      <div className={classes.root}>
+        <ChatHeader />
+        <SideBar chats={chats} />
+        <Chat messages={messages} />
+      </div>
+    );
+  }
 }
 
 export default withStyles(styles)(ChatPage);

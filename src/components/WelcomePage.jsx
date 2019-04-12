@@ -1,21 +1,48 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Redirect } from 'react-router-dom';
 import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TabContainer from "./auth/TabContainer";
+import {
+Paper,
+AppBar,
+Tabs,
+Tab,
+Typography,
+Grid,
+Toolbar
+} from "@material-ui/core";
+import LoginForm from "./auth/LoginForm";
+import SignupForm from "./auth/SignupForm";
 
 const styles = theme => ({
   root: {
     flexGrow: 1
+  },
+  paper: {
+    flexGrow: 1,
+    marginTop: 10 + theme.spacing.unit * 3,
+    width: 500
   }
 });
 
 class WelcomePage extends Component {
+  state = {
+    value: 0
+  };
+
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
   render() {
-    const { classes } = this.props;
+    const { classes, signup, login, isAuthenticated } = this.props;
+    const { value } = this.state;
+
+    if (isAuthenticated) {
+      return (
+        <Redirect to="/chat" />
+      );
+    }
+
     return (
       <div className={classes.root}>
         <AppBar position="static" color="primary">
@@ -25,9 +52,25 @@ class WelcomePage extends Component {
             </Typography>
           </Toolbar>
         </AppBar>
+
         <Grid container justify="center">
           <Grid item>
-            <TabContainer />
+            <Paper className={classes.paper}>
+              <AppBar position="static">
+                <Tabs
+                  value={value}
+                  onChange={this.handleChange}
+                  variant="fullWidth"
+                >
+                  <Tab label="Вход" />
+                  <Tab label="Регистрация" />
+                </Tabs>
+              </AppBar>
+              <div className={classes.tabContent}>
+              {value === 0 && <LoginForm onSubmit={login} />}
+              {value === 1 && <SignupForm onSubmit={signup} />}
+              </div>
+            </Paper>
           </Grid>
         </Grid>
       </div>

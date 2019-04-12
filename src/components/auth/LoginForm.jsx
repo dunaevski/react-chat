@@ -35,50 +35,92 @@ const styles = theme => ({
   }
 });
 
-function LoginForm(props) {
-  const { classes } = props;
+class LoginForm extends React.Component {
+  state = {
+    username: {
+      value: "",
+      isValid: true
+    },
+    password: {
+      value: "",
+      isValid: true
+    }
+  };
 
-  return (
-    <main className={classes.main}>
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Вход
-        </Typography>
-        <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Пароль</InputLabel>
-            <Input
-              name="password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-          </FormControl>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Запомнить меня"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+  handleInputChange = event => {
+    event.persist();
+    const { name, value } = event.target;
+    this.setState(prevState => ({
+      [name]: {
+        ...prevState[name],
+        value
+      }
+    }));
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+
+    const { username, password } = this.state;
+
+    this.props.onSubmit(username.value, password.value);
+  };
+
+  render() {
+    const { classes } = this.props;
+    const { username, password } = this.state;
+
+    return (
+      <main className={classes.main}>
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Вход
-          </Button>
-        </form>
-      </div>
-    </main>
-  );
+          </Typography>
+          <form className={classes.form} onSubmit={this.handleSubmit}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="username">Логин</InputLabel>
+              <Input
+                id="username"
+                value={username.value}
+                name="username"
+                autoFocus
+                onChange={this.handleInputChange}
+                autoComplete="username"
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Пароль</InputLabel>
+              <Input
+                id="password"
+                value={password.value}
+                name="password"
+                type="password"
+                onChange={this.handleInputChange}
+                autoComplete="current-password"
+              />
+            </FormControl>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Запомнить меня"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Вход
+            </Button>
+          </form>
+        </div>
+      </main>
+    );
+  }
 }
 
 LoginForm.propTypes = {

@@ -1,22 +1,30 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
+  Router,
   Route,
   Switch,
   Redirect
 } from "react-router-dom";
-import ChatPage from "./components/ChatPage";
-import WelcomePage from './components/WelcomePage'
+import { Provider } from "react-redux";
+import PrivateRoute from './containers/PrivateRoute'
+import ChatPage from "./containers/ChatPage";
+import WelcomePage from "./containers/WelcomePage";
+import history from './utils/history'
+import configureStore from "./store";
+
+const store = configureStore();
 
 const App = () => {
   return (
-    <Router>
-      <Switch> 
-        <Route path="/(welcome)?" component={WelcomePage} />
-        <Route path="/chat" component={ChatPage} />
-        <Redirect to="/" />
-      </Switch>
-    </Router>
+    <Provider store={store}>
+      <Router history={history}>
+        <Switch>
+          <Route exact path="/(welcome)?" component={WelcomePage} />
+          <PrivateRoute path="/chat" component={ChatPage} />
+          <Redirect to="/" />
+        </Switch>
+      </Router>
+    </Provider>
   );
 };
 

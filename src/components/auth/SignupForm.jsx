@@ -35,59 +35,128 @@ const styles = theme => ({
   }
 });
 
-function SignupForm(props) {
-  const { classes } = props;
+class SignupForm extends React.Component {
+  state = {
+    username: {
+      value: "",
+      isValid: true
+    },
+    password: {
+      value: "",
+      isValid: true
+    },
+    repeatedPassword: {
+      value: "",
+      isValid: true
+    }
+  };
 
-  return (
-    <main className={classes.main}>
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Регистрация
-        </Typography>
-        <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Пароль</InputLabel>
-            <Input
-              name="password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Подтвердить пароль</InputLabel>
-            <Input
-              name="password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-          </FormControl>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Запомнить меня"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+  validate = () => {
+    const { password, repeatedPassword } = this.state;
+    const isValid = password.value === repeatedPassword.value;
+
+    this.setState({
+      password: { ...password, isValid },
+      repeatedPassword: { ...repeatedPassword, isValid }
+    });
+
+    return isValid;
+  };
+
+  handleInputChange = event => {
+    event.persist();
+    const { name, value } = event.target;
+    this.setState(prevState => ({
+      [name]: {
+        ...prevState[name],
+        value
+      }
+    }));
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+
+    if (!this.validate()) {
+      return;
+    }
+
+    const { username, password } = this.state;
+
+    this.props.onSubmit(username.value, password.value);
+    
+  };
+
+  render() {
+    const { classes } = this.props;
+    const { username, password, repeatedPassword } = this.state;
+
+    return (
+      <main className={classes.main}>
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Регистрация
-          </Button>
-        </form>
-      </div>
-    </main>
-  );
+          </Typography>
+          <form className={classes.form} onSubmit={this.handleSubmit}>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="username">Логин</InputLabel>
+              <Input
+                id="username"
+                value={username.value}
+                onChange={this.handleInputChange}
+                name="username"
+                autoComplete="username"
+                autoFocus
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Пароль</InputLabel>
+              <Input
+                id="password"
+                value={password.value}
+                onChange={this.handleInputChange}
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                error={!password.isValid}
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="repeatedPassword">
+                Подтвердить пароль
+              </InputLabel>
+              <Input
+                id="repeatedPassword"
+                value={repeatedPassword.value}
+                onChange={this.handleInputChange}
+                name="repeatedPassword"
+                type="password"
+                autoComplete="current-repeatedPassword"
+                error={!repeatedPassword.isValid}
+              />
+            </FormControl>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Запомнить меня"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Регистрация
+            </Button>
+          </form>
+        </div>
+      </main>
+    );
+  }
 }
 
 SignupForm.propTypes = {
