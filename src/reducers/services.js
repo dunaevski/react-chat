@@ -102,14 +102,14 @@ export const errors = (state = intialState.errors, action) => {
     case types.SIGNUP_FAILURE:
     case types.LOGIN_FAILURE:
     case types.LOGOUT_FAILURE:
-    // Used for internal needs
+    // Использовать для системы (показывать токен ?)
     // case types.RECIEVE_AUTH_FAILURE:
       return { ...state, auth: action.payload };
 
     case types.SIGNUP_SUCCESS:
     case types.LOGIN_SUCCESS:
     case types.LOGOUT_SUCCESS:
-    // Used for internal needs
+    //  Использовать для системы (показывать токен ?)
     // case types.RECIEVE_AUTH_SUCCESS:
     return { ...state, auth: null };
     

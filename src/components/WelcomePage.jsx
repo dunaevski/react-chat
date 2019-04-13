@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Redirect } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import {
-Paper,
-AppBar,
-Tabs,
-Tab,
-Typography,
-Grid,
-Toolbar
+  Paper,
+  AppBar,
+  Tabs,
+  Tab,
+  Typography,
+  Grid,
+  Toolbar
 } from "@material-ui/core";
 import LoginForm from "./auth/LoginForm";
 import SignupForm from "./auth/SignupForm";
+import ErrorMessage from "./ErrorMessage";
 
 const styles = theme => ({
   root: {
@@ -34,13 +35,11 @@ class WelcomePage extends Component {
     this.setState({ value });
   };
   render() {
-    const { classes, signup, login, isAuthenticated } = this.props;
+    const { classes, signup, login, isAuthenticated, error } = this.props;
     const { value } = this.state;
 
     if (isAuthenticated) {
-      return (
-        <Redirect to="/chat" />
-      );
+      return <Redirect to="/chat" />; 
     }
 
     return (
@@ -67,12 +66,13 @@ class WelcomePage extends Component {
                 </Tabs>
               </AppBar>
               <div className={classes.tabContent}>
-              {value === 0 && <LoginForm onSubmit={login} />}
-              {value === 1 && <SignupForm onSubmit={signup} />}
+                {value === 0 && <LoginForm onSubmit={login} />}
+                {value === 1 && <SignupForm onSubmit={signup} />}
               </div>
             </Paper>
           </Grid>
         </Grid>
+        <ErrorMessage error={error}/>
       </div>
     );
   }

@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import ChatHeader from "./appbar/ChatHeader";
 import SideBar from "./sidebar/NavBar/SideBar";
 import Chat from "./appbar/MessageContent/Chat";
+import ErrorMessage from "./ErrorMessage";
 
 const styles = theme => ({
   root: {
@@ -70,7 +71,8 @@ class ChatPage extends React.Component {
       deleteChat,
       sendMessage,
       messages,
-      editUser
+      editUser,
+      error
     } = this.props;
 
     return (
@@ -92,6 +94,7 @@ class ChatPage extends React.Component {
           sendMessage={sendMessage}
           joinChat={joinChat}
         />
+        <ErrorMessage error={error}/>
       </div>
     );
   }
