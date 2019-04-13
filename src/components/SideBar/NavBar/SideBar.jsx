@@ -10,7 +10,6 @@ import ExploreIcon from "@material-ui/icons/Explore";
 import NewChatButton from "./NewChatButton";
 import ChatList from "./Chats/ChatList";
 
-
 const styles = theme => ({
   drawerPaper: {
     position: "fixed",
@@ -32,16 +31,34 @@ const styles = theme => ({
 
 class SideBar extends Component {
   state = {
-    value: 0
+    searchValue: "",
+    activeTab: 0
   };
 
-  handleChange = (event, value) => {
-    this.setState({ value });
+  handleSearchChange = event => {
+    this.setState({
+      searchValue: event.target.value
+    });
+  };
+
+  handleTabChange = (event, activeTab) => {
+    this.setState({ activeTab });
+  };
+
+  filterChats = chats => {
+    const { searchValue } = this.state;
+    return chats
+      .filter(chat =>
+        chat.title.toLowerCase().includes(searchValue.toLowerCase())
+      )
+      .sort((one, two) =>
+        one.title.toLowerCase() <= two.title.toLowerCase() ? -1 : 1
+      );
   };
 
   render() {
-    const { classes, chats } = this.props;
-    const { value } = this.state;
+    const { classes, chats, createChat } = this.props;
+    const { activeTab, searchValue } = this.state;
 
     return (
       <Drawer
@@ -53,18 +70,25 @@ class SideBar extends Component {
         anchor="left"
       >
         <div className={classes.drawerHeader}>
-          <TextField fullWidth margin="normal" placeholder="Поиск чатов..." />
+          <TextField
+            fullWidth
+            margin="normal"
+            placeholder="Поиск чатов..."
+            value={searchValue}
+            onChange={this.handleSearchChange}
+          />
         </div>
         <Divider />
 
-        {value === 0 && <ChatList chats={chats} />}
-        {/* {value === 1 && <Test chats={chats}/>} */}
+        <ChatList
+          chats={this.filterChats(activeTab === 0 ? chats.all : chats.my)}
+        />
 
-        <NewChatButton />
+        <NewChatButton onClick={createChat} />
 
         <BottomNavigation
-          value={value}
-          onChange={this.handleChange}
+          value={activeTab}
+          onChange={this.handleTabChange}
           showLabels
           className={classes.bottomNav}
         >

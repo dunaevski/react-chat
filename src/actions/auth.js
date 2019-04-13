@@ -1,98 +1,153 @@
-import * as types from '../constants/auth';
-import callApi from '../utils/call-api'
+import * as types from "../constants/auth";
+import callApi from "../utils/call-api";
 
 export function signup(username, password) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { isFetching } = getState().services;
+
+    if (isFetching.signup) {
+      return Promise.resolve();
+    }
+
     dispatch({
-      type: types.SIGNUP_REQUEST,
+      type: types.SIGNUP_REQUEST
     });
 
-    return callApi('/signup', undefined, {
-        method: 'POST'
-      }, {
+    return callApi(
+      "/signup",
+      undefined,
+      {
+        method: "POST"
+      },
+      {
         username,
-        password,
-      })
+        password
+      }
+    )
       .then(json => {
         if (!json.token) {
-          throw new Error('Token has not been provided!');
+          throw new Error("Token has not been provided!");
         }
         // Save JWT to localStorage
-        localStorage.setItem('token', json.token);
+        localStorage.setItem("token", json.token);
 
         dispatch({
           type: types.SIGNUP_SUCCESS,
-          payload: json,
-        })
+          payload: json
+        });
       })
 
-      .catch(reason => dispatch({
-        type: types.SIGNUP_FAILURE,
-        payload: reason,
-      }));
+      .catch(reason =>
+        dispatch({
+          type: types.SIGNUP_FAILURE,
+          payload: reason
+        })
+      );
   };
 }
 
 export function login(username, password) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { isFetching } = getState().services;
+
+    if (isFetching.login) {
+      return Promise.resolve();
+    }
+
     dispatch({
-      type: types.LOGIN_REQUEST,
+      type: types.LOGIN_REQUEST
     });
 
-    return callApi('/login', undefined, {
-        method: 'POST'
-      }, {
+    return callApi(
+      "/login",
+      undefined,
+      {
+        method: "POST"
+      },
+      {
         username,
-        password,
-      })
+        password
+      }
+    )
       .then(json => {
         if (!json.token) {
-          throw new Error('Token has not been provided!');
+          throw new Error("Token has not been provided!");
         }
         // Save JWT to localStorage
-        localStorage.setItem('token', json.token);
+        localStorage.setItem("token", json.token);
         dispatch({
           type: types.LOGIN_SUCCESS,
-          payload: json,
-        })
+          payload: json
+        });
       })
 
-      .catch(reason => dispatch({
-        type: types.LOGIN_FAILURE,
-        payload: reason,
-      }));
+      .catch(reason =>
+        dispatch({
+          type: types.LOGIN_FAILURE,
+          payload: reason
+        })
+      );
   };
 }
 
 export function logout() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { isFetching } = getState().services;
+
+    if (isFetching.logout) {
+      return Promise.resolve();
+    }
+
     dispatch({
-      type: types.LOGOUT_REQUEST,
+      type: types.LOGOUT_REQUEST
     });
+
+    return callApi("/logout")
+      .then(json => {
+        // Remove Token from localStorage
+        localStorage.removeItem("token");
+
+        dispatch({
+          type: types.LOGOUT_SUCCESS,
+          payload: json
+        });
+      })
+
+      .catch(reason =>
+        dispatch({
+          type: types.LOGOUT_FAILURE,
+          payload: reason
+        })
+      );
   };
 }
 
 export function recieveAuth() {
   return (dispatch, getState) => {
-    const {
-      token
-    } = getState().auth
+    const { token } = getState().auth;
+    // const { isFetching } = getState().services;
 
-      dispatch({
-        type: types.RECIEVE_AUTH_REQUEST,
-      })
+    // if (isFetching.recieveAuth) {
+    //   return Promise.resolve();
+    // }
 
+    dispatch({
+      type: types.RECIEVE_AUTH_REQUEST
+    });
 
-    return callApi('/users/me', token)
+    return callApi("/users/me", token)
+      .then(json =>
+        dispatch({
+          type: types.RECIEVE_AUTH_SUCCESS,
+          payload: json
+        })
+      )
 
-      .then(json => dispatch({
-        type: types.RECIEVE_AUTH_SUCCESS,
-        payload: json,
-      }))
-
-      .catch(reason => dispatch({
-        type: types.RECIEVE_AUTH_FAILURE,
-        payload: reason,
-      }));
-  }
+      .catch(reason =>
+        dispatch({
+          type: types.RECIEVE_AUTH_FAILURE,
+          payload: reason
+        })
+      );
+  };
 }

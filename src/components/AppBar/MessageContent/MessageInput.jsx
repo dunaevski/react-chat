@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Input from "@material-ui/core/Input";
+import { Button, Input, Paper } from "@material-ui/core";
 
 const styles = theme => ({
   messageInputWrapper: {
@@ -18,13 +17,48 @@ const styles = theme => ({
 });
 
 class MessageInput extends Component {
+  state = {
+    value: ""
+  };
+
+  handleValueChange = event => {
+    this.setState({
+      value: event.target.value
+    });
+  };
+
+  handleKeyPress = event => {
+    const { value } = this.state;
+
+    if (event.key === 'Enter' && value) {
+      this.props.sendMessage(value);
+      this.setState({ value: '' });
+    }
+  };
   render() {
-    const { classes } = this.props;
+    const { classes, showJoinButton, onJoinButtonClick } = this.props;
 
     return (
       <div className={classes.messageInputWrapper}>
         <Paper className={classes.messageInput} elevation={6}>
-          <Input fullWidth placeholder="Введите сообщение…" />
+          {showJoinButton ? (
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={onJoinButtonClick}
+            >
+              Присоедениться
+            </Button>
+          ) : (
+            <Input
+              fullWidth
+              placeholder="Введите сообщение…"
+              value={this.state.value}
+              onChange={this.handleValueChange}
+              onKeyPress={this.handleKeyPress}
+            />
+          )}
         </Paper>
       </div>
     );

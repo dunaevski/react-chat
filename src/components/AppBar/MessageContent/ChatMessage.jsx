@@ -1,10 +1,13 @@
 import React from "react";
 import classnames from "classnames";
+import moment from "moment";
+import "moment/locale/ru";
 import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-// import Avatar from "@material-ui/core/Avatar";
-import Avatar from '../../Avatar'
-import Paper from "@material-ui/core/Paper";
+import { Typography, Paper } from "@material-ui/core";
+import Avatar from "../../Avatar";
+
+import senderName from "../../../utils/sender-name";
+import randomColor from "../../../utils/color-from";
 
 const styles = theme => ({
   messageWrapper: {
@@ -25,14 +28,51 @@ const styles = theme => ({
   messageFromMe: {
     marginRight: theme.spacing.unit * 2,
     backgroundColor: "#e6dcff"
+  },
+  statusMessage: {
+    width: "100%",
+    textAlign: "center"
+  },
+  statusMessageUser: {
+    display: "inline"
   }
 });
 
-function ChatMessage(props) { 
-  const { classes, message, sender } = props;
-  const isMessageFromMe = sender === "me";
+function ChatMessage(props) {
+  const {
+    classes,
+    content,
+    sender,
+    activeUser,
+    createdAt,
+    statusMessage
+  } = props;
 
-  const userAvatar = <Avatar colorFrom={sender}>{sender}</Avatar>;
+  const isMessageFromMe = sender._id === activeUser._id;
+  const displayedName = senderName(sender);
+  
+
+  if (statusMessage) {
+    return (
+      <div className={classes.messageWrapper}>
+        <Typography className={classes.statusMessage}>
+          <Typography
+            variant="caption"
+            style={{ color: randomColor(sender._id) }}
+            className={classes.statusMessageUser}
+          >
+            {displayedName}
+          </Typography>
+          {content}
+          <Typography variant="caption" component="span">
+            {moment(createdAt).fromNow()}
+          </Typography>
+        </Typography>
+      </div>
+    );
+  }
+
+  const userAvatar = <Avatar colorFrom={sender._id}>{displayedName}</Avatar>;
 
   return (
     <div
@@ -48,8 +88,16 @@ function ChatMessage(props) {
           isMessageFromMe && classes.messageFromMe
         )}
       >
-        <Typography variant="caption">{sender}</Typography>
-        <Typography variant="body1">{message}</Typography>
+        <Typography
+          variant="caption"
+          style={{ color: randomColor(sender._id) }}
+        >
+          {displayedName}
+        </Typography>
+        <Typography variant="body1">{content}</Typography>
+        <Typography variant="caption" className={classes.time}>
+          {moment(createdAt).fromNow()}
+        </Typography>
       </Paper>
       {isMessageFromMe && userAvatar}
     </div>

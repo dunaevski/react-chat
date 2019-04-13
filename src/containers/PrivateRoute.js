@@ -20,6 +20,7 @@ class PrivateRoute extends React.Component {
           ) : (
             <Redirect
               to={{
+                pathname: "/welcome",
                 state: { from: props.location }
               }}
             />
@@ -48,5 +49,3 @@ export default withRouter(
     mapDispatchToProps
   )(PrivateRoute)
 );
-
-  
