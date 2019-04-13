@@ -21,8 +21,7 @@ const activeId = (state = initialState.activeId, action) => {
     case types.DELETE_CHAT_SUCCESS:
       return null;
     case types.RECIEVE_DELETED_CHAT:
-      return state === getChatId(action.payload.chat) ? null : state
-
+      return state === getChatId(action.payload.chat) ? null : state;
     default:
       return state;
   }
@@ -84,8 +83,8 @@ const byIds = (state = initialState.byIds, action) => {
     case types.RECIEVE_NEW_CHAT:
       return {
         ...state,
-        [getChatId(action.payload.chat)]: action.payload.chat
-      }
+        [getChatId(action.payload.chat)]: action.payload.chat,
+      };
     case types.DELETE_CHAT_SUCCESS:
     case types.RECIEVE_DELETED_CHAT:
       const newState = {
@@ -102,7 +101,7 @@ export default combineReducers({
   activeId,
   allIds,
   myIds,
-  byIds
+  byIds,
 });
 
 

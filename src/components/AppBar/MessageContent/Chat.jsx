@@ -22,15 +22,17 @@ class Chat extends Component {
       activeChat,
       activeUser,
       joinChat,
-      sendMessage
+      sendMessage,
+      isConnected
     } = this.props;
-    
+
     return (
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <ChatMessageList messages={messages} activeUser={activeUser} />
-        {activeUser && activeChat && (
+        {activeUser && (
           <MessageInput
+            disabled={!isConnected}
             sendMessage={sendMessage}
             showJoinButton={!activeUser.isChatMember}
             onJoinButtonClick={() => joinChat(activeChat._id)}

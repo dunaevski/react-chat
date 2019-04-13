@@ -30,19 +30,20 @@ class MessageInput extends Component {
   handleKeyPress = event => {
     const { value } = this.state;
 
-    if (event.key === 'Enter' && value) {
+    if (event.key === "Enter" && value) {
       this.props.sendMessage(value);
-      this.setState({ value: '' });
+      this.setState({ value: "" });
     }
   };
   render() {
-    const { classes, showJoinButton, onJoinButtonClick } = this.props;
+    const { classes, showJoinButton, onJoinButtonClick, disabled } = this.props;
 
     return (
       <div className={classes.messageInputWrapper}>
         <Paper className={classes.messageInput} elevation={6}>
           {showJoinButton ? (
             <Button
+              disabled={disabled}
               fullWidth
               variant="contained"
               color="primary"
@@ -52,6 +53,7 @@ class MessageInput extends Component {
             </Button>
           ) : (
             <Input
+              disabled={disabled}
               fullWidth
               placeholder="Введите сообщение…"
               value={this.state.value}

@@ -1,4 +1,4 @@
-import React from "react"; 
+import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import ChatListItem from "./ChatListItem";
 import { Typography, List } from "@material-ui/core";
@@ -16,12 +16,13 @@ const styles = theme => ({
 });
 
 function ChatList(props) {
-  const { classes, chats, activeChat } = props;
+  const { classes, chats, activeChat, disabled } = props;
   return (
     <List className={classes.chatsList}>
       {chats && chats.length ? (
         chats.map(chat => (
           <ChatListItem
+            disabled={disabled}
             key={chat._id}
             active={activeChat && activeChat._id === chat._id}
             chatId={chat._id}

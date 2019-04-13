@@ -16,7 +16,6 @@ const styles = theme => ({
 });
 
 class ChatPage extends React.Component {
-  
   componentDidMount() {
     const {
       match,
@@ -46,8 +45,8 @@ class ChatPage extends React.Component {
     const {
       match: { params },
       setActiveChat,
+      unmountChat,
       mountChat,
-      unmountChat
     } = this.props;
     const { params: nextParams } = nextProps.match;
 
@@ -72,7 +71,8 @@ class ChatPage extends React.Component {
       sendMessage,
       messages,
       editUser,
-      error
+      error,
+      isConnected
     } = this.props;
 
     return (
@@ -84,8 +84,13 @@ class ChatPage extends React.Component {
           deleteChat={deleteChat}
           logout={logout}
           editUser={editUser}
+          isConnected={isConnected}
         />
-        <SideBar chats={chats} createChat={createChat} />
+        <SideBar
+          chats={chats}
+          createChat={createChat}
+          isConnected={isConnected}
+        />
 
         <Chat
           messages={messages}
@@ -93,8 +98,9 @@ class ChatPage extends React.Component {
           activeUser={activeUser}
           sendMessage={sendMessage}
           joinChat={joinChat}
+          isConnected={isConnected}
         />
-        <ErrorMessage error={error}/>
+        <ErrorMessage error={error} />
       </div>
     );
   }

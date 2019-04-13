@@ -1,5 +1,5 @@
 import history from "../utils/history";
-import * as types from "../constants/services";
+import * as types from "../constants";
 
 export function redirect(to) {
   return dispatch => {

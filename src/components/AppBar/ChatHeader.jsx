@@ -29,7 +29,8 @@ function ChatHeader(props) {
     logout,
     leaveChat,
     deleteChat,
-    editUser
+    editUser,
+    isConnected
   } = props;
   
   return (
@@ -41,6 +42,7 @@ function ChatHeader(props) {
             <Typography variant="title" className={classes.appBarTitle}>
               {activeChat.title}
               <ChatMenu
+                disabled={!isConnected }
                 activeUser={activeUser}
                 onLeaveClick={() => leaveChat(activeChat._id)}
                 onDeleteClick={() => deleteChat(activeChat._id)}
@@ -58,6 +60,7 @@ function ChatHeader(props) {
           </Typography>
         )}
         <UserMenu
+        disabled={!isConnected }
           activeUser={activeUser}
           onLogoutClick={logout}
           onEditProfileClick={editUser}
