@@ -1,5 +1,5 @@
 import React from "react";
-import classnames from "classnames";
+import classNames from "classnames";
 import moment from "moment";
 import "moment/locale/ru";
 import { withStyles } from "@material-ui/core/styles";
@@ -76,14 +76,14 @@ function ChatMessage(props) {
 
   return (
     <div
-      className={classnames(
+      className={classNames(
         classes.messageWrapper,
         isMessageFromMe && classes.messageWrappperFromMe
       )}
     >
       {!isMessageFromMe && userAvatar}
       <Paper
-        className={classnames(
+        className={classNames(
           classes.message,
           isMessageFromMe && classes.messageFromMe
         )}

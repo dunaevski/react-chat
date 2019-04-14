@@ -27,9 +27,25 @@ const styles = theme => ({
 });
 
 class WelcomePage extends Component {
+  static propTypes = {
+    signup: PropTypes.func.isRequired,
+    login: PropTypes.func.isRequired,
+    recieveAuth: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool.isRequired,
+    error: PropTypes.instanceOf(Error)
+  };
+
+  static defaultProps = {
+    error: null
+  };
+
   state = {
     value: 0
   };
+
+  componentDidMount() {
+    this.props.recieveAuth();
+  }
 
   handleChange = (event, value) => {
     this.setState({ value });
@@ -39,7 +55,7 @@ class WelcomePage extends Component {
     const { value } = this.state;
 
     if (isAuthenticated) {
-      return <Redirect to="/chat" />; 
+      return <Redirect to="/chat" />;
     }
 
     return (
@@ -72,7 +88,7 @@ class WelcomePage extends Component {
             </Paper>
           </Grid>
         </Grid>
-        <ErrorMessage error={error}/>
+        <ErrorMessage error={error} />
       </div>
     );
   }

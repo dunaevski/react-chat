@@ -35,14 +35,14 @@ function ChatHeader(props) {
   
   return (
     <AppBar color="primary" className={classes.appBar}>
-      <Toolbar>
+      <Toolbar color="contrast">
         {activeChat ? (
           <>
             <Avatar colorFrom={activeChat._id}>{activeChat.title}</Avatar>
             <Typography variant="title" className={classes.appBarTitle}>
               {activeChat.title}
               <ChatMenu
-                disabled={!isConnected }
+                disabled={!isConnected}
                 activeUser={activeUser}
                 onLeaveClick={() => leaveChat(activeChat._id)}
                 onDeleteClick={() => deleteChat(activeChat._id)}
@@ -60,7 +60,7 @@ function ChatHeader(props) {
           </Typography>
         )}
         <UserMenu
-        disabled={!isConnected }
+        disabled={!isConnected}
           activeUser={activeUser}
           onLogoutClick={logout}
           onEditProfileClick={editUser}

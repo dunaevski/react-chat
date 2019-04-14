@@ -30,7 +30,7 @@ class Chat extends Component {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <ChatMessageList messages={messages} activeUser={activeUser} />
-        {activeUser && (
+        {activeUser && activeChat &&(
           <MessageInput
             disabled={!isConnected}
             sendMessage={sendMessage}

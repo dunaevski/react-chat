@@ -1,6 +1,6 @@
-import * as types from '../constants';
-import callApi from '../utils/call-api';
-import { redirect } from './services';
+import * as types from "../constants";
+import callApi from "../utils/call-api";
+import { redirect } from "./services";
 
 export function fetchAllChats() {
   return (dispatch, getState) => {
@@ -16,7 +16,7 @@ export function fetchAllChats() {
       type: types.FETCH_ALL_CHATS_REQUEST
     });
 
-    return callApi('/chats', token)
+    return callApi("/chats", token)
       .then(data =>
         dispatch({
           type: types.FETCH_ALL_CHATS_SUCCESS,
@@ -46,7 +46,7 @@ export function fetchMyChats() {
       type: types.FETCH_MY_CHATS_REQUEST
     });
 
-    return callApi('/chats/my', token)
+    return callApi("/chats/my", token)
       .then(data =>
         dispatch({
           type: types.FETCH_MY_CHATS_SUCCESS,
@@ -91,16 +91,16 @@ export function fetchChat(chatId) {
           payload: reason
         });
 
-        dispatch(redirect('/chat'));
+        dispatch(redirect("/chat"));
       });
   };
 }
 
 export function setActiveChat(chatId) {
   return dispatch => {
-    return dispatch(fetchChat(chatId)).then(data => {
+    dispatch(fetchChat(chatId)).then(data => {
       if (!data) {
-        dispatch(redirect('/chat'));
+        dispatch(redirect("/chat"));
 
         return dispatch({
           type: types.UNSET_ACTIVE_CHAT
@@ -112,7 +112,7 @@ export function setActiveChat(chatId) {
         payload: data
       });
 
-      dispatch(redirect(`/chat/${data.chat._id}`));
+      return dispatch(redirect(`/chat/${data.chat._id}`));
     });
   };
 }
@@ -132,12 +132,7 @@ export function createChat(title) {
       payload: { title }
     });
 
-    return callApi(
-      '/chats',
-      token,
-      { method: 'POST' },
-      { data: { title } }
-    )
+    return callApi("/chats", token, { method: "POST" }, { data: { title } })
       .then(({ chat }) => {
         dispatch({
           type: types.CREATE_CHAT_SUCCESS,
@@ -214,7 +209,7 @@ export function leaveChat(chatId) {
           payload: data
         });
 
-        dispatch(redirect('/chat'));
+        dispatch(redirect("/chat"));
         dispatch({
           type: types.UNSET_ACTIVE_CHAT
         });
@@ -245,18 +240,18 @@ export function deleteChat(chatId) {
       payload: { chatId }
     });
 
-    return callApi(`/chats/${chatId}`, token, { method: 'DELETE' })
+    return callApi(`/chats/${chatId}`, token, { method: "DELETE" })
       .then(data => {
         dispatch({
           type: types.DELETE_CHAT_SUCCESS,
           payload: data
         });
 
+        dispatch(redirect(`/chat`));
+        
         dispatch({
           type: types.UNSET_ACTIVE_CHAT
         });
-
-        dispatch(redirect(`/chat`));
 
         return data;
       })

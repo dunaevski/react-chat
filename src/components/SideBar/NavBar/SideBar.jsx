@@ -82,7 +82,7 @@ class SideBar extends Component {
 
         <ChatList
           disabled={!isConnected}
-          chats={this.filterChats(activeTab === 0 ? chats.all : chats.my)}
+          chats={this.filterChats(activeTab === 0 ? chats.my : chats.all)}
           activeChat={chats.active}
         />
 
@@ -94,8 +94,8 @@ class SideBar extends Component {
           showLabels
           className={classes.bottomNav}
         >
-          <BottomNavigationAction label="Все" icon={<ExploreIcon />} />
           <BottomNavigationAction label="Поледние" icon={<RestoreIcon />} />
+          <BottomNavigationAction label="Все" icon={<ExploreIcon />} />
         </BottomNavigation>
       </Drawer>
     );
