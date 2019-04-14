@@ -6,7 +6,7 @@
      'Authorization': `Bearer ${token}`,
    } : {};
 
-   return fetch(`${config.API_URL}/${endpoint}`, {
+   return fetch(`${config.API_URI}/${endpoint}`, {
        method: 'GET',
        headers: {
          'Accept': 'application/json',

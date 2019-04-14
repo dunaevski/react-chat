@@ -26,7 +26,7 @@ export function socketsConnect() {
       type: types.SOCKETS_CONNECTION_REQUEST
     });
 
-    socket = SocketIOClient(config.SOCKETS_URL, {
+    socket = SocketIOClient(config.SOCKETS_URI, {
       query: { token }
     });
 
