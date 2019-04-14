@@ -1,11 +1,12 @@
  import fetch from 'isomorphic-fetch'
+ import config from '../config'
 
  export default function callAPI(endpoint, token, options, payload) { // endpoint - адрес куда обращаться, payload - данные которые передем в теле запроса
    const authHeaders = token ? {
      'Authorization': `Bearer ${token}`,
    } : {};
 
-   return fetch(`http://localhost:8000/v1/${endpoint}`, {
+   return fetch(`${config.API_URL}/${endpoint}`, {
        method: 'GET',
        headers: {
          'Accept': 'application/json',
