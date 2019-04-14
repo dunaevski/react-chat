@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import ChatHeader from "./appbar/ChatHeader";
+import ChatHeader from './appbar/ChatHeader'
 import SideBar from "./sidebar/NavBar/SideBar";
 import Chat from "./appbar/MessageContent/Chat";
 import ErrorMessage from "./ErrorMessage";
