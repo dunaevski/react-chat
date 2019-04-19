@@ -94,7 +94,7 @@ class ChatPage extends React.Component {
     } = this.props;
     const { params: nextParams } = nextProps.match;
 
-    // If we change route, then fetch messages from chat by chatID
+    // If we change route, then fetch messages from chat by chatId
     if (nextParams.chatId && params.chatId !== nextParams.chatId) {
       setActiveChat(nextParams.chatId);
       unmountChat(params.chatId);
